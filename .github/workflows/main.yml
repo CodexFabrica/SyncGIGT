@@ -1,0 +1,45 @@
+name: Sync GitHub Issues to Google Tasks
+
+on:
+  schedule:
+    - cron: '0 0 * * *' 
+  
+  push:
+    branches: [ "main" ]
+
+  issues:
+    types: [opened]
+  
+  workflow_dispatch:
+
+jobs:
+  sync-job:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      issues: read
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create Google Credentials File
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS_JSON }}' > credentials.json
+
+      - name: Run Sync Script
+        run: node index.js
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_OWNER:
+          GITHUB_REPOS: ${{ secrets.REPOS_GITHUB }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
