@@ -1,4 +1,4 @@
-# GitHub to Google Tasks Sync
+# Synchronization between GitHub Issues to Google Tasks (AI-Assisted)
 
 This tool syncs GitHub Issues to Google Tasks, using Google Gemini to summarize the issue content. It will only sync issues of the repositories you specify. Allowed for standard (free) account too.
 
